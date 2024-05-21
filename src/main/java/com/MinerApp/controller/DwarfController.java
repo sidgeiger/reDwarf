@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/api/dwarves/")
+@RequestMapping("/api/dwarves")
 @Slf4j
 public class DwarfController {
     private DwarfService dwarfService;
