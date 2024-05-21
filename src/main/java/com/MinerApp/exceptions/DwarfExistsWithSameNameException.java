@@ -11,5 +11,4 @@ public class DwarfExistsWithSameNameException extends RuntimeException{
         return name;
     }
 
-
 }
