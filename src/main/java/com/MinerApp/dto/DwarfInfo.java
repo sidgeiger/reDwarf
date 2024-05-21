@@ -3,7 +3,7 @@ package com.MinerApp.dto;
 import lombok.Data;
 
 @Data
-public class dwarfInfo {
+public class DwarfInfo {
 
     private Long id;
 

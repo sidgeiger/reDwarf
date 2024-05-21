@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class createDwarfCommand {
+public class CreateDwarfCommand {
     @NotNull(message = "This field cannot be null.")
     @NotEmpty(message = "This field cannot be empty.")
     @NotBlank(message = "This field cannot be blank.")
