@@ -54,7 +54,7 @@ public class DwarfService {
 
     public Dwarf findById(Long dwarfId) {
         Optional<Dwarf> optionalDwarf = dwarfRepository.findById(dwarfId);
-        if(optionalDwarf.isPresent()){
+        if(optionalDwarf.isEmpty()){
             throw new DwarfNotExistsWithGivenId(dwarfId);
         }
         return optionalDwarf.get();
