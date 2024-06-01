@@ -6,6 +6,7 @@ import com.MinerApp.dto.DwarfInfo;
 import com.MinerApp.exceptions.DwarfExistsWithSameNameException;
 import com.MinerApp.repository.DwarfRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +20,15 @@ public class DwarfService {
 
     private DwarfRepository dwarfRepository;
 
+    private ModelMapper modelMapper;
+
     @Autowired
-    public DwarfService(DwarfRepository dwarfRepository) {
+    public DwarfService(DwarfRepository dwarfRepository, ModelMapper modelMapper) {
         this.dwarfRepository = dwarfRepository;
+        this.modelMapper = modelMapper;
     }
 
+    //this object is created without using ModelMapper configuration
     public DwarfInfo dwarfSpawner(CreateDwarfCommand command) {
         dwarfNameValidator(command.getName());
         Dwarf dwarf = new Dwarf();

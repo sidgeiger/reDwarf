@@ -14,7 +14,6 @@ public class CreateDwarfCommand {
     @NotBlank(message = "This field cannot be blank.")
     @Length(min = 3)
     @Pattern(regexp = "^[A-Za-z]+(\\s+[A-Za-z]+)*$", message = "Invalid input: Name must contain only alphabet characters and cannot start with whitespace.")
-
     private String name;
 
     @NotNull(message = "This field cannot be null.")
