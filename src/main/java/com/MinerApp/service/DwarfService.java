@@ -57,5 +57,6 @@ public class DwarfService {
         if(optionalDwarf.isPresent()){
             throw new DwarfNotExistsWithGivenId(dwarfId);
         }
+        return optionalDwarf.get();
     }
 }
