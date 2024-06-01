@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @Slf4j
@@ -34,5 +36,10 @@ public class ItemService {
     public ItemInfo itemCrafter(CreateItemCommand command) {
         Item item = modelMapper.map(command, Item.class);
         Dwarf dwarf = dwarfService.findById(command.getDwarfId());
+        item.setDwarf(dwarf);
+        itemRepository.save(item);
+        ItemInfo itemInfo = modelMapper.map(item, ItemInfo.class);
+        itemInfo.setDwarfName(dwarf.getName());
+        return itemInfo;
     }
 }
