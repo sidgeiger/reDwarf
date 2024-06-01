@@ -4,6 +4,7 @@ import com.MinerApp.domain.Dwarf;
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
 import com.MinerApp.exceptions.DwarfExistsWithSameNameException;
+import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
 import com.MinerApp.repository.DwarfRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -48,6 +49,13 @@ public class DwarfService {
         Optional<Dwarf> optionalDwarf = dwarfRepository.findDwarfByName(dwarfName);
         if(optionalDwarf.isPresent()){
             throw new DwarfExistsWithSameNameException(dwarfName);
+        }
+    }
+
+    public Dwarf findById(Long dwarfId) {
+        Optional<Dwarf> optionalDwarf = dwarfRepository.findById(dwarfId);
+        if(optionalDwarf.isPresent()){
+            throw new DwarfNotExistsWithGivenId(dwarfId);
         }
     }
 }
