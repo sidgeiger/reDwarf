@@ -2,16 +2,16 @@ package com.MinerApp.controller;
 
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
+import com.MinerApp.dto.ItemBonusWithDwarfInfo;
 import com.MinerApp.service.DwarfService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/dwarves")
@@ -30,5 +30,13 @@ public class DwarfController {
         DwarfInfo dwarfInfo = dwarfService.dwarfSpawner(command);
         log.info("Dwarf created successful!");
         return new ResponseEntity<>(dwarfInfo, HttpStatusCode.valueOf(201));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemBonusWithDwarfInfo> itemBonus(@PathVariable Long id) {
+        log.info("Incrementing item bonuses for Dwarf with given ID...");
+        ItemBonusWithDwarfInfo itemBonusWithDwarfInfo = dwarfService.itemBonusIncrementer(id);
+        log.info("Incrementing item bonuses done successful!");
+        return new ResponseEntity<>(itemBonusWithDwarfInfo, HttpStatusCode.valueOf(202));
     }
 }
