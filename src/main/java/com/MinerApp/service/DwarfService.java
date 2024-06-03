@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -68,17 +69,21 @@ public class DwarfService {
 
     public ItemBonusWithDwarfInfo itemBonusIncrementer(Long id) {
         Dwarf dwarf = findById(id);
-        for (Item item : dwarf.getItems()) {
-            item.setBonus(item.getBonus() + 1);
-        }
+
+        dwarf.getItems().forEach(item -> item.setBonus(item.getBonus() + 1));
+
+        List<ItemInfo> itemInfoList = dwarf.getItems().stream()
+                .map(item -> {
+                    ItemInfo itemInfo = modelMapper.map(item, ItemInfo.class);
+                    itemInfo.setDwarfName(item.getDwarf().getName());
+                    return itemInfo;
+                })
+                .collect(Collectors.toList());
+
         ItemBonusWithDwarfInfo itemBonusWithDwarfInfo = modelMapper.map(dwarf, ItemBonusWithDwarfInfo.class);
-        List<ItemInfo> itemInfoList = new ArrayList<>();
-        for (Item item : dwarf.getItems()) {
-            ItemInfo itemInfo = modelMapper.map(item, ItemInfo.class);
-            itemInfo.setDwarfName(item.getDwarf().getName());
-            itemInfoList.add(itemInfo);
-        }
         itemBonusWithDwarfInfo.setItemList(itemInfoList);
-        return  itemBonusWithDwarfInfo;
+
+        return itemBonusWithDwarfInfo;
     }
+
 }
