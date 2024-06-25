@@ -21,9 +21,6 @@ public class CreateRuneCommand {
     private int bonus;
 
     @NotNull(message = "This field cannot be null.")
-    private boolean banned;
-
-    @NotNull(message = "This field cannot be null.")
     @Min(1)
     private Long itemId;
 
