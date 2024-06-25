@@ -52,4 +52,23 @@ public class ItemService {
         }
         return optionalItem.get();
     }
+
+    public ItemInfo copyItemForDwarf(Long itemId, Long dwarfId) {
+
+        Item item = this.findById(itemId);
+        Dwarf dwarf = dwarfService.findById(dwarfId);
+
+        Item newItem = new Item();
+        newItem.setName(item.getName());
+        newItem.setBonus(item.getBonus());
+        newItem.setValue(item.getValue());
+        newItem.setDwarf(dwarf);
+        newItem.setRunes(item.getRunes());
+
+        itemRepository.save(newItem);
+
+        ItemInfo itemInfo = modelMapper.map(newItem, ItemInfo.class);
+        itemInfo.setDwarfName(dwarf.getName());
+        return itemInfo;
+    }
 }
