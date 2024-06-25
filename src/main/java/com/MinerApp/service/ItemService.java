@@ -4,6 +4,8 @@ import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Item;
 import com.MinerApp.dto.CreateItemCommand;
 import com.MinerApp.dto.ItemInfo;
+import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
+import com.MinerApp.exceptions.ItemNotExistsWithGivenId;
 import com.MinerApp.repository.DwarfRepository;
 import com.MinerApp.repository.ItemRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -41,5 +43,13 @@ public class ItemService {
         ItemInfo itemInfo = modelMapper.map(item, ItemInfo.class);
         itemInfo.setDwarfName(dwarf.getName());
         return itemInfo;
+    }
+
+    public Item findById(Long itemId) {
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if(optionalItem.isEmpty()){
+            throw new ItemNotExistsWithGivenId(itemId);
+        }
+        return optionalItem.get();
     }
 }
