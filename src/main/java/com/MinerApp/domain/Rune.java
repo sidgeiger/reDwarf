@@ -19,7 +19,7 @@ public class Rune {
 
     private int bonus;
 
-    private boolean banned;
+    private boolean banned = false;
 
     @ManyToOne
     @JoinColumn(name = "Item")
