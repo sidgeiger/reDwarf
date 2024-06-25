@@ -1,6 +1,10 @@
 package com.MinerApp.service;
 
+import com.MinerApp.domain.Dwarf;
+import com.MinerApp.domain.Item;
+import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateRuneCommand;
+import com.MinerApp.dto.ItemInfo;
 import com.MinerApp.dto.RuneInfo;
 import com.MinerApp.repository.RuneRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +32,14 @@ public class RuneService {
     }
 
     public RuneInfo runeCrafter(CreateRuneCommand command) {
-        return null;
+
+        Rune rune = modelMapper.map(command, Rune.class);
+        Item item = itemService.findById(command.getItemId());
+        rune.setItem(item);
+        runeRepository.save(rune);
+        RuneInfo runeInfo = modelMapper.map(rune, RuneInfo.class);
+        runeInfo.setItemId(item.getId());
+        return runeInfo;
+
     }
 }
