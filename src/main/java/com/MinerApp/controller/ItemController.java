@@ -29,7 +29,7 @@ public class ItemController {
     }
 
     @PutMapping("/{itemId}/dwarf/{dwarfId}")
-    public ResponseEntity<ItemInfo> copyItem(@PathVariable Long itemId, Long dwarfId) {
+    public ResponseEntity<ItemInfo> copyItem(@PathVariable Long itemId, @PathVariable Long dwarfId) {
         log.info("Copy item for a Dwarf with all characteristics with given Dwarf ID...");
         ItemInfo itemInfo = itemService.copyItemForDwarf(itemId, dwarfId);
         log.info("Incrementing item bonuses done successful!");
