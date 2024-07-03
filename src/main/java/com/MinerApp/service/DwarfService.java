@@ -8,6 +8,7 @@ import com.MinerApp.dto.ItemBonusWithDwarfInfo;
 import com.MinerApp.dto.ItemInfo;
 import com.MinerApp.exceptions.DwarfExistsWithSameNameException;
 import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
+import com.MinerApp.exceptions.LazyMuddaFakkaException;
 import com.MinerApp.repository.DwarfRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -86,4 +87,12 @@ public class DwarfService {
         return itemBonusWithDwarfInfo;
     }
 
+    public int getDays() {
+        if (dwarfRepository.count() != 0){
+            int numberOfDays = 0;
+            //logic to be implemented
+            return numberOfDays;
+        }
+        throw new LazyMuddaFakkaException();
+    }
 }
