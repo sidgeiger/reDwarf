@@ -2,6 +2,7 @@ package com.MinerApp.service;
 
 import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Item;
+import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateItemCommand;
 import com.MinerApp.dto.ItemInfo;
 import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,12 +29,15 @@ public class ItemService {
 
     private ModelMapper modelMapper;
 
+    private RuneService runeService;
+
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, DwarfService dwarfService, ModelMapper modelMapper) {
+    public ItemService(ItemRepository itemRepository, DwarfService dwarfService, ModelMapper modelMapper, RuneService runeService) {
         this.itemRepository = itemRepository;
         this.dwarfService = dwarfService;
         this.modelMapper = modelMapper;
+        this.runeService = runeService;
     }
 
     public ItemInfo itemCrafter(CreateItemCommand command) {
@@ -63,11 +68,15 @@ public class ItemService {
         newItem.setBonus(item.getBonus());
         newItem.setValue(item.getValue());
         newItem.setDwarf(dwarf);
-        newItem.setRunes(item.getRunes());
 
-        itemRepository.save(newItem);
+        List<Rune> newRunes = runeService.runeListIterator(item.getRunes());
+        for (Rune newRune : newRunes) {
+            newRune.setItem(newItem);
+        }
 
-        ItemInfo itemInfo = modelMapper.map(newItem, ItemInfo.class);
+        Item savedItem = itemRepository.save(newItem);
+
+        ItemInfo itemInfo = modelMapper.map(savedItem, ItemInfo.class);
         itemInfo.setDwarfName(dwarf.getName());
         return itemInfo;
     }
