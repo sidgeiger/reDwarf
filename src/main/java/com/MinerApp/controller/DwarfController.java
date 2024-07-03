@@ -39,4 +39,11 @@ public class DwarfController {
         log.info("Incrementing item bonuses done successful!");
         return new ResponseEntity<>(itemBonusWithDwarfInfo, HttpStatusCode.valueOf(202));
     }
+
+    @GetMapping
+    public ResponseEntity<String> getDays() {
+        log.info("Calculating Dwarf productivity in mine...");
+        int numberOfDays = dwarfService.getDays();
+        return new ResponseEntity<>("The number of days to mine 1 000 000 Gold is: "+ numberOfDays,  HttpStatusCode.valueOf(201));
+    }
 }
