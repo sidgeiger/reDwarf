@@ -42,4 +42,12 @@ public class GlobalExceptionHandler{
         log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
         return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
     }
+
+    @ExceptionHandler(ItemNotExistsWithGivenId.class)
+    public ResponseEntity<List<ValidationError>> handleItemNotExistsWithGivenIdException(ItemNotExistsWithGivenId exception) {
+        ValidationError validationError = new ValidationError("ID",
+                "Item is not exists with given ID: " + exception.getId());
+        log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
+        return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
+    }
 }
