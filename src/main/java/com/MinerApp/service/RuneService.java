@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -48,21 +49,16 @@ public class RuneService {
     }
 
     public List<Rune> runeListIterator(List<Rune> runeList) {
-        List<Rune> newRuneListForSettingItemId = null;
-        if (!runeList.isEmpty()) {
-            newRuneListForSettingItemId = new ArrayList<>();
-            for (Rune rune : runeList) {
-                Rune newRune = new Rune();
-                newRune.setBanned(rune.isBanned());
-                newRune.setBonus(rune.getBonus());
-                newRune.setName(rune.getName());
-                newRune.setItem(rune.getItem());
-                Rune savedRune = this.runeSave(newRune);
-                newRuneListForSettingItemId.add(savedRune);
-            }
-
-        }
-        return newRuneListForSettingItemId;
+        return runeList.stream()
+                .map(rune -> {
+                    Rune newRune = new Rune();
+                    newRune.setBanned(rune.isBanned());
+                    newRune.setBonus(rune.getBonus());
+                    newRune.setName(rune.getName());
+                    newRune.setItem(rune.getItem());
+                    return this.runeSave(newRune);
+                })
+                .collect(Collectors.toList());
     }
 
     private Rune runeSave(Rune rune) {
