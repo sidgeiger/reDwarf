@@ -42,4 +42,11 @@ public class GlobalExceptionHandler{
         log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
         return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
     }
+
+    @ExceptionHandler(LazyMuddaFakkaException.class)
+    public ResponseEntity<List<ValidationError>> handleLazyMuddaFakkaException(LazyMuddaFakkaException exception) {
+        ValidationError validationError = new ValidationError(exception.get_MESSAGE());
+        log.error("Error in validation: " + validationError.getErrorMessage());
+        return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
+    }
 }

@@ -12,4 +12,7 @@ public class ValidationError {
     private String field;
 
     private String errorMessage;
+
+    public ValidationError(String message) {
+    }
 }
