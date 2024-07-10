@@ -2,6 +2,7 @@ package com.MinerApp.service;
 
 import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Item;
+import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
 import com.MinerApp.dto.ItemBonusWithDwarfInfo;
@@ -89,10 +90,24 @@ public class DwarfService {
 
     public int getDays() {
         if (dwarfRepository.count() != 0){
-            int numberOfDays = 0;
-            //logic to be implemented
-            return numberOfDays;
+            int goldToMine = 1000000;
+            int productivityOfAllDwarves = 0;
+            for (Dwarf dwarf : dwarfRepository.findAll()) {
+                productivityOfAllDwarves += dwarf.getProductivity();
+                for (Item item : dwarf.getItems()) {
+                    productivityOfAllDwarves += item.getBonus();
+                    for (Rune rune : item.getRunes()) {
+                        productivityOfAllDwarves += rune.getBonus();
+                    }
+                }
+            }
+            return this.daysNeeded(productivityOfAllDwarves, goldToMine);
         }
         throw new LazyMuddaFakkaException();
+    }
+
+    private int daysNeeded(int productivityOfAllDwarves, int goldToMine) {
+        //(int) Math.ceil((double) goldToMine / productivityOfAllDwarves);
+        return (int) Math.ceil((double) goldToMine / productivityOfAllDwarves);
     }
 }
