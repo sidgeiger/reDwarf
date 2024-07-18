@@ -1,5 +1,6 @@
 package com.MinerApp.controller;
 
+import com.MinerApp.dto.BestDwarvesNames;
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
 import com.MinerApp.dto.ItemBonusWithDwarfInfo;
@@ -44,5 +45,14 @@ public class DwarfController {
         log.info("Calculating Dwarf productivity in mine...");
         int numberOfDays = dwarfService.getDays();
         return new ResponseEntity<>("The number of days to mine 1 000 000 Gold is: "+ numberOfDays,  HttpStatusCode.valueOf(200));
+    }
+
+    @GetMapping("/best")
+    public ResponseEntity<BestDwarvesNames> getBestDwarf() {
+        log.info("Searching for the best Dwarf in the mine...");
+        //logic to implement
+        BestDwarvesNames bestDwarves = dwarfService.bestDwarvesInMine();
+        log.info("Got the best list of best Dwarves!");
+        return new ResponseEntity<>(bestDwarves,  HttpStatusCode.valueOf(200));
     }
 }
