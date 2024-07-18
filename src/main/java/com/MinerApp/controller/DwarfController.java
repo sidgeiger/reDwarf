@@ -1,6 +1,5 @@
 package com.MinerApp.controller;
 
-import com.MinerApp.dto.BestDwarvesNames;
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
 import com.MinerApp.dto.ItemBonusWithDwarfInfo;
@@ -12,6 +11,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/dwarves")
@@ -48,10 +49,10 @@ public class DwarfController {
     }
 
     @GetMapping("/best")
-    public ResponseEntity<BestDwarvesNames> getBestDwarf() {
+    public ResponseEntity<List<String>> getBestDwarf() {
         log.info("Searching for the best Dwarf in the mine...");
         //logic to implement
-        BestDwarvesNames bestDwarves = dwarfService.bestDwarvesInMine();
+        List<String> bestDwarves = dwarfService.bestDwarvesInMine();
         log.info("Got the best list of best Dwarves!");
         return new ResponseEntity<>(bestDwarves,  HttpStatusCode.valueOf(200));
     }
