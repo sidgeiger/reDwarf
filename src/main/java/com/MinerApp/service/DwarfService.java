@@ -107,7 +107,6 @@ public class DwarfService {
     }
 
     private int daysNeeded(int productivityOfAllDwarves, int goldToMine) {
-        //(int) Math.ceil((double) goldToMine / productivityOfAllDwarves);
         return (int) Math.ceil((double) goldToMine / productivityOfAllDwarves);
     }
 }
