@@ -1,7 +1,6 @@
 package com.MinerApp.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,11 +42,10 @@ public class GlobalExceptionHandler{
         return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
     }
 
-    @ExceptionHandler(ItemNotExistsWithGivenId.class)
-    public ResponseEntity<List<ValidationError>> handleItemNotExistsWithGivenIdException(ItemNotExistsWithGivenId exception) {
-        ValidationError validationError = new ValidationError("ID",
-                "Item is not exists with given ID: " + exception.getId());
-        log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
+    @ExceptionHandler(LazyMuddaFakkaException.class)
+    public ResponseEntity<List<ValidationError>> handleLazyMuddaFakkaException(LazyMuddaFakkaException exception) {
+        ValidationError validationError = new ValidationError(exception.get_MESSAGE());
+        log.error("Error in validation: " + validationError.getErrorMessage());
         return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
     }
 }

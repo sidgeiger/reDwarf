@@ -1,6 +1,7 @@
 package com.MinerApp.service;
 
 import com.MinerApp.domain.Dwarf;
+import com.MinerApp.domain.Rune;
 import com.MinerApp.domain.Item;
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
@@ -8,6 +9,7 @@ import com.MinerApp.dto.ItemBonusWithDwarfInfo;
 import com.MinerApp.dto.ItemInfo;
 import com.MinerApp.exceptions.DwarfExistsWithSameNameException;
 import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
+import com.MinerApp.exceptions.LazyMuddaFakkaException;
 import com.MinerApp.repository.DwarfRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -15,11 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -86,4 +87,26 @@ public class DwarfService {
         return itemBonusWithDwarfInfo;
     }
 
+    public int getDays() {
+        if (dwarfRepository.count() != 0){
+            int goldToMine = 1000;
+            int productivityOfAllDwarves = dwarfRepository.findAll().stream()
+                    .flatMap(dwarf -> Stream.concat(
+                            Stream.of(dwarf.getProductivity()),
+                            dwarf.getItems().stream()
+                                    .flatMap(item -> Stream.concat(
+                                            Stream.of(item.getBonus()),
+                                            item.getRunes().stream().map(Rune::getBonus)
+                                    ))
+                    ))
+                    .mapToInt(Integer::intValue)
+                    .sum();
+            return this.daysNeeded(productivityOfAllDwarves, goldToMine);
+        }
+        throw new LazyMuddaFakkaException();
+    }
+
+    private int daysNeeded(int productivityOfAllDwarves, int goldToMine) {
+        return (int) Math.ceil((double) goldToMine / productivityOfAllDwarves);
+    }
 }

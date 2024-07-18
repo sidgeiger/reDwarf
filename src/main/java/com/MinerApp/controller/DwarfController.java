@@ -7,7 +7,6 @@ import com.MinerApp.service.DwarfService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,5 +37,12 @@ public class DwarfController {
         ItemBonusWithDwarfInfo itemBonusWithDwarfInfo = dwarfService.itemBonusIncrementer(id);
         log.info("Incrementing item bonuses done successful!");
         return new ResponseEntity<>(itemBonusWithDwarfInfo, HttpStatusCode.valueOf(202));
+    }
+
+    @GetMapping("/days")
+    public ResponseEntity<String> getDays() {
+        log.info("Calculating Dwarf productivity in mine...");
+        int numberOfDays = dwarfService.getDays();
+        return new ResponseEntity<>("The number of days to mine 1 000 000 Gold is: "+ numberOfDays,  HttpStatusCode.valueOf(200));
     }
 }
