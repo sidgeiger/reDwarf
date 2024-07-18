@@ -1,7 +1,6 @@
 package com.MinerApp.service;
 
 import com.MinerApp.domain.Dwarf;
-import com.MinerApp.domain.Item;
 import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
@@ -17,11 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -90,17 +88,18 @@ public class DwarfService {
 
     public int getDays() {
         if (dwarfRepository.count() != 0){
-            int goldToMine = 1000000;
-            int productivityOfAllDwarves = 0;
-            for (Dwarf dwarf : dwarfRepository.findAll()) {
-                productivityOfAllDwarves += dwarf.getProductivity();
-                for (Item item : dwarf.getItems()) {
-                    productivityOfAllDwarves += item.getBonus();
-                    for (Rune rune : item.getRunes()) {
-                        productivityOfAllDwarves += rune.getBonus();
-                    }
-                }
-            }
+            int goldToMine = 1000;
+            int productivityOfAllDwarves = dwarfRepository.findAll().stream()
+                    .flatMap(dwarf -> Stream.concat(
+                            Stream.of(dwarf.getProductivity()),
+                            dwarf.getItems().stream()
+                                    .flatMap(item -> Stream.concat(
+                                            Stream.of(item.getBonus()),
+                                            item.getRunes().stream().map(Rune::getBonus)
+                                    ))
+                    ))
+                    .mapToInt(Integer::intValue)
+                    .sum();
             return this.daysNeeded(productivityOfAllDwarves, goldToMine);
         }
         throw new LazyMuddaFakkaException();
