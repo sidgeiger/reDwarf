@@ -3,10 +3,7 @@ package com.MinerApp.service;
 import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Rune;
 import com.MinerApp.domain.Item;
-import com.MinerApp.dto.CreateDwarfCommand;
-import com.MinerApp.dto.DwarfInfo;
-import com.MinerApp.dto.ItemBonusWithDwarfInfo;
-import com.MinerApp.dto.ItemInfo;
+import com.MinerApp.dto.*;
 import com.MinerApp.exceptions.DwarfExistsWithSameNameException;
 import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
 import com.MinerApp.exceptions.LazyMuddaFakkaException;
@@ -88,7 +85,7 @@ public class DwarfService {
     }
 
     public int getDays() {
-        if (dwarfRepository.count() != 0){
+            this.isTheMineEmpty();
             int goldToMine = 1000;
             int productivityOfAllDwarves = dwarfRepository.findAll().stream()
                     .flatMap(dwarf -> Stream.concat(
@@ -102,11 +99,20 @@ public class DwarfService {
                     .mapToInt(Integer::intValue)
                     .sum();
             return this.daysNeeded(productivityOfAllDwarves, goldToMine);
-        }
-        throw new LazyMuddaFakkaException();
-    }
+     }
 
     private int daysNeeded(int productivityOfAllDwarves, int goldToMine) {
         return (int) Math.ceil((double) goldToMine / productivityOfAllDwarves);
+    }
+
+    private void isTheMineEmpty() {
+        if (dwarfRepository.count() == 0) {
+            throw new LazyMuddaFakkaException();
+        }
+    }
+
+    public BestDwarvesNames bestDwarvesInMine() {
+        this.isTheMineEmpty();
+        return dwarfRepository.getBestDwarves();
     }
 }
