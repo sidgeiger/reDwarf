@@ -2,6 +2,7 @@ package com.MinerApp.service;
 
 import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Rune;
+import com.MinerApp.domain.Item;
 import com.MinerApp.dto.CreateDwarfCommand;
 import com.MinerApp.dto.DwarfInfo;
 import com.MinerApp.dto.ItemBonusWithDwarfInfo;
