@@ -2,7 +2,6 @@ package com.MinerApp.service;
 
 import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Rune;
-import com.MinerApp.domain.Item;
 import com.MinerApp.dto.*;
 import com.MinerApp.exceptions.DwarfExistsWithSameNameException;
 import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
@@ -11,10 +10,10 @@ import com.MinerApp.repository.DwarfRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,10 +28,13 @@ public class DwarfService {
 
     private ModelMapper modelMapper;
 
+    private ItemService itemService;
+
     @Autowired
-    public DwarfService(DwarfRepository dwarfRepository, ModelMapper modelMapper) {
+    public DwarfService(DwarfRepository dwarfRepository, ModelMapper modelMapper, @Lazy ItemService itemService) {
         this.dwarfRepository = dwarfRepository;
         this.modelMapper = modelMapper;
+        this.itemService = itemService;
     }
 
     //this object is created without using ModelMapper configuration
@@ -116,6 +118,7 @@ public class DwarfService {
         this.isTheMineEmpty();
 
         int highestProductivity = dwarfRepository.findTheDwarfWithTheHighestProductivity();
+        int averagePrice = itemService.findAveragePrice();
         List<String> bestDwarvesNames = dwarfRepository.getBestDwarves(highestProductivity);
         return bestDwarvesNames;
     }
