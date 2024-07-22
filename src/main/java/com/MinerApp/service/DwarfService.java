@@ -114,7 +114,9 @@ public class DwarfService {
 
     public List<String> bestDwarvesInMine() {
         this.isTheMineEmpty();
-        List<String> bestDwarvesNames = dwarfRepository.getBestDwarves();
+
+        int highestProductivity = dwarfRepository.findTheDwarfWithTheHighestProductivity();
+        List<String> bestDwarvesNames = dwarfRepository.getBestDwarves(highestProductivity);
         return bestDwarvesNames;
     }
 }
