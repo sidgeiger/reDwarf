@@ -2,11 +2,7 @@ package com.MinerApp.service;
 
 import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Rune;
-import com.MinerApp.domain.Item;
-import com.MinerApp.dto.CreateDwarfCommand;
-import com.MinerApp.dto.DwarfInfo;
-import com.MinerApp.dto.ItemBonusWithDwarfInfo;
-import com.MinerApp.dto.ItemInfo;
+import com.MinerApp.dto.*;
 import com.MinerApp.exceptions.DwarfExistsWithSameNameException;
 import com.MinerApp.exceptions.DwarfNotExistsWithGivenId;
 import com.MinerApp.exceptions.LazyMuddaFakkaException;
@@ -14,6 +10,7 @@ import com.MinerApp.repository.DwarfRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +28,13 @@ public class DwarfService {
 
     private ModelMapper modelMapper;
 
+    private ItemService itemService;
+
     @Autowired
-    public DwarfService(DwarfRepository dwarfRepository, ModelMapper modelMapper) {
+    public DwarfService(DwarfRepository dwarfRepository, ModelMapper modelMapper, @Lazy ItemService itemService) {
         this.dwarfRepository = dwarfRepository;
         this.modelMapper = modelMapper;
+        this.itemService = itemService;
     }
 
     //this object is created without using ModelMapper configuration
@@ -88,7 +88,7 @@ public class DwarfService {
     }
 
     public int getDays() {
-        if (dwarfRepository.count() != 0){
+            this.isTheMineEmpty();
             int goldToMine = 1000;
             int productivityOfAllDwarves = dwarfRepository.findAll().stream()
                     .flatMap(dwarf -> Stream.concat(
@@ -102,11 +102,24 @@ public class DwarfService {
                     .mapToInt(Integer::intValue)
                     .sum();
             return this.daysNeeded(productivityOfAllDwarves, goldToMine);
-        }
-        throw new LazyMuddaFakkaException();
-    }
+     }
 
     private int daysNeeded(int productivityOfAllDwarves, int goldToMine) {
         return (int) Math.ceil((double) goldToMine / productivityOfAllDwarves);
+    }
+
+    private void isTheMineEmpty() {
+        if (dwarfRepository.count() == 0) {
+            throw new LazyMuddaFakkaException();
+        }
+    }
+
+    public List<String> bestDwarvesInMine() {
+        this.isTheMineEmpty();
+
+        int highestProductivity = dwarfRepository.findTheDwarfWithTheHighestProductivity();
+        int averagePrice = itemService.findAveragePrice();
+        List<String> bestDwarvesNames = dwarfRepository.getBestDwarves(highestProductivity, averagePrice);
+        return bestDwarvesNames;
     }
 }

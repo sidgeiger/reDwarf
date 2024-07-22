@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api/dwarves")
 @Slf4j
@@ -44,5 +46,14 @@ public class DwarfController {
         log.info("Calculating Dwarf productivity in mine...");
         int numberOfDays = dwarfService.getDays();
         return new ResponseEntity<>("The number of days to mine 1 000 000 Gold is: "+ numberOfDays,  HttpStatusCode.valueOf(200));
+    }
+
+    @GetMapping("/best")
+    public ResponseEntity<List<String>> getBestDwarf() {
+        log.info("Searching for the best Dwarf in the mine...");
+        //logic to implement
+        List<String> bestDwarves = dwarfService.bestDwarvesInMine();
+        log.info("Got the best list of best Dwarves!");
+        return new ResponseEntity<>(bestDwarves,  HttpStatusCode.valueOf(200));
     }
 }

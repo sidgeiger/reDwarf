@@ -80,4 +80,8 @@ public class ItemService {
         itemInfo.setDwarfName(dwarf.getName());
         return itemInfo;
     }
+
+    public int findAveragePrice() {
+        return (int) Math.round(itemRepository.findAveragePrice());
+    }
 }
