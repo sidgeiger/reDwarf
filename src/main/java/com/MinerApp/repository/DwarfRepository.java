@@ -3,7 +3,6 @@ package com.MinerApp.repository;
 import com.MinerApp.domain.Dwarf;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,8 +17,8 @@ public interface DwarfRepository extends JpaRepository<Dwarf, Long> {
 //
 //    Here’s a breakdown of how to use positional parameters in a JPQL query:
 //    Positional Parameters: They are indicated by a ? followed by a number (?1, ?2, etc.). The number corresponds to the position of the parameter in the method signature.
-    @Query("SELECT new list (d.name) from Dwarf d where d.productivity = ?1")
-    List<String> getBestDwarves(int highestProductivity);
+    @Query("SELECT new list (d.name) from Dwarf d join d.items i where d.productivity = ?1 and i.value < ?2")
+    List<String> getBestDwarves(int highestProductivity, int averagePrice);
 
     @Query("SELECT MAX(d.productivity) from Dwarf d")
     int findTheDwarfWithTheHighestProductivity();

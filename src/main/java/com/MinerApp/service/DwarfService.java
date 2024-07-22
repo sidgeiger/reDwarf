@@ -119,7 +119,7 @@ public class DwarfService {
 
         int highestProductivity = dwarfRepository.findTheDwarfWithTheHighestProductivity();
         int averagePrice = itemService.findAveragePrice();
-        List<String> bestDwarvesNames = dwarfRepository.getBestDwarves(highestProductivity);
+        List<String> bestDwarvesNames = dwarfRepository.getBestDwarves(highestProductivity, averagePrice);
         return bestDwarvesNames;
     }
 }
