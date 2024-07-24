@@ -1,10 +1,8 @@
 package com.MinerApp.service;
 
-import com.MinerApp.domain.Dwarf;
 import com.MinerApp.domain.Item;
 import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateRuneCommand;
-import com.MinerApp.dto.ItemInfo;
 import com.MinerApp.dto.RuneInfo;
 import com.MinerApp.exceptions.RuneRepositoryIsEmptyException;
 import com.MinerApp.exceptions.ThereIsNoRuneWithGivenNameException;
@@ -77,7 +75,6 @@ public class RuneService {
             if (rune.getName().equals(runeName)) {
                 runesForBan.add(rune);
             }
-
         }
         if (runesForBan.isEmpty()) {
             throw new ThereIsNoRuneWithGivenNameException(runeName);
