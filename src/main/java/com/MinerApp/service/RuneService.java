@@ -4,6 +4,7 @@ import com.MinerApp.domain.Item;
 import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateRuneCommand;
 import com.MinerApp.dto.RuneInfo;
+import com.MinerApp.dto.RunesWithAvgBonuesInfo;
 import com.MinerApp.exceptions.RuneRepositoryIsEmptyException;
 import com.MinerApp.exceptions.ThereIsNoRuneWithGivenNameException;
 import com.MinerApp.repository.RuneRepository;
@@ -67,9 +68,7 @@ public class RuneService {
     }
 
     public String runeBanner(String runeName) {
-        if (runeRepository.count() == 0) {
-            throw new RuneRepositoryIsEmptyException();
-        }
+        this.RuneRepositoryChecker();
         List<Rune> runesForBan = new ArrayList<>();
         for (Rune rune : runeRepository.findAll()) {
             if (rune.getName().equals(runeName)) {
@@ -85,5 +84,17 @@ public class RuneService {
 
         }
         return "Banned " + runesForBan.size() + " rune(s)!";
+    }
+
+    private void RuneRepositoryChecker() {
+        if (runeRepository.count() == 0) {
+            throw new RuneRepositoryIsEmptyException();
+        }
+    }
+
+    public RunesWithAvgBonuesInfo runesWithAvgBonusesDistinctNames() {
+        this.RuneRepositoryChecker();
+        //runeRepository.
+        return runesWithAvgBonuesInfo;
     }
 }
