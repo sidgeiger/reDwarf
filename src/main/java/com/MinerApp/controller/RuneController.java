@@ -1,9 +1,6 @@
 package com.MinerApp.controller;
 
-import com.MinerApp.dto.CreateItemCommand;
-import com.MinerApp.dto.CreateRuneCommand;
-import com.MinerApp.dto.ItemInfo;
-import com.MinerApp.dto.RuneInfo;
+import com.MinerApp.dto.*;
 import com.MinerApp.service.ItemService;
 import com.MinerApp.service.RuneService;
 import jakarta.validation.Valid;
@@ -13,6 +10,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/runes")
@@ -38,6 +37,15 @@ public class RuneController {
         String response = runeService.runeBanner(runeName);
         log.info("Rune(s) deleted successfully!");
         return new ResponseEntity<>(response, HttpStatusCode.valueOf(200));
+    }
+
+    @GetMapping
+    public ResponseEntity<RunesWithAvgBonuesInfo> getRunesWithAvgBonuses() {
+        log.info("Searching for the runes with avg bonus values...");
+        //logic to implement
+        RunesWithAvgBonuesInfo runesWithAvgBonuesInfo = runeService.runesWithAvgBonusesDistinctNames();
+        log.info("Got the rune list with AVG bonus values!");
+        return new ResponseEntity<>(runesWithAvgBonuesInfo,  HttpStatusCode.valueOf(200));
     }
 
 }
