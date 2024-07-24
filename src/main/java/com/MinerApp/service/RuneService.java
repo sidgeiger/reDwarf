@@ -94,7 +94,6 @@ public class RuneService {
 
     public RunesWithAvgBonuesInfo runesWithAvgBonusesDistinctNames() {
         this.RuneRepositoryChecker();
-        //runeRepository.
-        return runesWithAvgBonuesInfo;
+        return runeRepository.runesWithAvgBonusesDistinctNamesJQPL();
     }
 }
