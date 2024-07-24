@@ -1,7 +1,6 @@
 package com.MinerApp.controller;
 
 import com.MinerApp.dto.*;
-import com.MinerApp.service.ItemService;
 import com.MinerApp.service.RuneService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +39,11 @@ public class RuneController {
     }
 
     @GetMapping
-    public ResponseEntity<RunesWithAvgBonuesInfo> getRunesWithAvgBonuses() {
+    public ResponseEntity<List<RunesWithAvgBonusesInfo>> getRunesWithAvgBonuses() {
         log.info("Searching for the runes with avg bonus values...");
-        //logic to implement
-        RunesWithAvgBonuesInfo runesWithAvgBonuesInfo = runeService.runesWithAvgBonusesDistinctNames();
+        List<RunesWithAvgBonusesInfo> runesWithAvgBonusesInfo = runeService.runesWithAvgBonusesDistinctNames();
         log.info("Got the rune list with AVG bonus values!");
-        return new ResponseEntity<>(runesWithAvgBonuesInfo,  HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(runesWithAvgBonusesInfo,  HttpStatusCode.valueOf(200));
     }
 
 }
