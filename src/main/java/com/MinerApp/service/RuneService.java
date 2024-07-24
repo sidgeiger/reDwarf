@@ -4,7 +4,7 @@ import com.MinerApp.domain.Item;
 import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateRuneCommand;
 import com.MinerApp.dto.RuneInfo;
-import com.MinerApp.dto.RunesWithAvgBonuesInfo;
+import com.MinerApp.dto.RunesWithAvgBonusesInfo;
 import com.MinerApp.exceptions.RuneRepositoryIsEmptyException;
 import com.MinerApp.exceptions.ThereIsNoRuneWithGivenNameException;
 import com.MinerApp.repository.RuneRepository;
@@ -92,7 +92,7 @@ public class RuneService {
         }
     }
 
-    public RunesWithAvgBonuesInfo runesWithAvgBonusesDistinctNames() {
+    public List<RunesWithAvgBonusesInfo> runesWithAvgBonusesDistinctNames() {
         this.RuneRepositoryChecker();
         return runeRepository.runesWithAvgBonusesDistinctNamesJQPL();
     }
