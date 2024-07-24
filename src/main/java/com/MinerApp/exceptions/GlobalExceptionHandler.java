@@ -48,4 +48,20 @@ public class GlobalExceptionHandler{
         log.error("Error in validation: " + validationError.getErrorMessage());
         return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
     }
+
+    @ExceptionHandler(RuneRepositoryIsEmptyException.class)
+    public ResponseEntity<List<ValidationError>> handleRuneRepositoryIsEmptyException(RuneRepositoryIsEmptyException exception) {
+        ValidationError validationError = new ValidationError("Rune Name",
+                "Rune repository is empty: " + exception.getMessage());
+        return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
+    }
+
+    @ExceptionHandler(ThereIsNoRuneWithGivenNameException.class)
+    public ResponseEntity<List<ValidationError>> handleThereIsNoRuneWithGivenNameException(ThereIsNoRuneWithGivenNameException exception) {
+        ValidationError validationError = new ValidationError("Rune Name",
+                "Rune is not exists with given name: " + exception.getName());
+        log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
+        return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
+    }
+
 }

@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/runes")
@@ -32,6 +30,14 @@ public class RuneController {
         RuneInfo runeInfo = runeService.runeCrafter(command);
         log.info("Rune created successful!");
         return new ResponseEntity<>(runeInfo, HttpStatusCode.valueOf(201));
+    }
+
+    @DeleteMapping("/{runeName}")
+    public ResponseEntity<String> deleteRune(@PathVariable String runeName) {
+        log.info("Searching for rune(s) to delete...");
+        String response = runeService.runeBanner(runeName);
+        log.info("Rune(s) deleted successfully!");
+        return new ResponseEntity<>(response, HttpStatusCode.valueOf(200));
     }
 
 }
