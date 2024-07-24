@@ -6,6 +6,8 @@ import com.MinerApp.domain.Rune;
 import com.MinerApp.dto.CreateRuneCommand;
 import com.MinerApp.dto.ItemInfo;
 import com.MinerApp.dto.RuneInfo;
+import com.MinerApp.exceptions.RuneRepositoryIsEmptyException;
+import com.MinerApp.exceptions.ThereIsNoRuneWithGivenNameException;
 import com.MinerApp.repository.RuneRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -64,5 +66,27 @@ public class RuneService {
     private Rune runeSave(Rune rune) {
         runeRepository.save(rune);
         return rune;
+    }
+
+    public String runeBanner(String runeName) {
+        if (runeRepository.count() == 0) {
+            throw new RuneRepositoryIsEmptyException();
+        }
+        List<Rune> runesForBan = new ArrayList<>();
+        for (Rune rune : runeRepository.findAll()) {
+            if (rune.getName().equals(runeName)) {
+                runesForBan.add(rune);
+            }
+
+        }
+        if (runesForBan.isEmpty()) {
+            throw new ThereIsNoRuneWithGivenNameException(runeName);
+        }
+        for (Rune rune : runesForBan) {
+            rune.setBanned(true);
+            rune.setItem(null);
+
+        }
+        return "Banned " + runesForBan.size() + " rune(s)!";
     }
 }
