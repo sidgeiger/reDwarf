@@ -51,8 +51,8 @@ public class GlobalExceptionHandler{
 
     @ExceptionHandler(RuneRepositoryIsEmptyException.class)
     public ResponseEntity<List<ValidationError>> handleRuneRepositoryIsEmptyException(RuneRepositoryIsEmptyException exception) {
-        ValidationError validationError = new ValidationError(exception.get_MESSAGE());
-        log.error("Error in validation: " + validationError.getErrorMessage());
+        ValidationError validationError = new ValidationError("Rune Name",
+                "Rune repository is empty: " + exception.getMessage());
         return new ResponseEntity<>(List.of(validationError), HttpStatusCode.valueOf(400));
     }
 
